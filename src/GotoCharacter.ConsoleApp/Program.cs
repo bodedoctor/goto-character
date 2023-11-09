@@ -2,6 +2,9 @@
 {
     internal class Program
     {
+        private const ConsoleColor HighlightColour = ConsoleColor.Red;
+        private const ConsoleColor LowLightColour = ConsoleColor.DarkGray;
+
         static void Main(string[] args)
         {
             string? filenameInput;
@@ -69,7 +72,7 @@
             Console.WriteLine($"Preview:");
             Console.WriteLine();
 
-            var position = GetPosition(fileContent, character);
+            var position = PositionIndex.GetPosition(fileContent, character);
 
             var lines = fileContent.Split('\n');
             var startLine = Math.Max(position.LineIndex - previewLines, 0);
@@ -80,7 +83,7 @@
                 {
                     Console.ForegroundColor = originalColour;
                     Console.Write($" {i}:\t{lines[i].Substring(0, position.CharacterIndex)}");
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = HighlightColour;
                     Console.Write(lines[position.LineIndex][position.CharacterIndex]);
                     Console.ForegroundColor = originalColour;
                     Console.Write(lines[i].Substring(position.CharacterIndex + 1, lines[i].Length - position.CharacterIndex - 1));
@@ -88,7 +91,7 @@
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.ForegroundColor = LowLightColour;
                     Console.WriteLine($" {i}:\t{lines[i]}");
                     Console.ForegroundColor = originalColour;
                 }
@@ -96,39 +99,15 @@
 
             Console.WriteLine();
             Console.Write("Found character ");
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = HighlightColour;
             Console.Write(character);
             Console.ForegroundColor = originalColour;
             Console.Write(" on line ");
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = HighlightColour;
             Console.Write(position.LineIndex);
             Console.ForegroundColor = originalColour;
             Console.Write(".");
             Console.WriteLine();
         }
-
-        private static PositionIndex GetPosition(string content, int character)
-        {
-            var newLineChar = '\n';
-            var lineIndex = content.Substring(0, character).Count(c => c.Equals(newLineChar));
-            var lines = content.Split(newLineChar);
-            var charCountToLine = 0;
-            for (var i = 0; i < lineIndex; i++)
-            {
-                charCountToLine += lines[i].Length + 1;
-            }
-            var charIndex = character - charCountToLine;
-            return new PositionIndex
-            {
-                LineIndex = lineIndex,
-                CharacterIndex = charIndex
-            };
-        }
     }
-}
-
-internal class PositionIndex
-{
-    public int LineIndex { get; set; }
-    public int CharacterIndex { get; set; }
 }
