@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GotoCharacter.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Repositories\\CAS-OrderMonitor\\src\\Veracity.OrderMonitor.OrderLogGenerator.Infrastructure\\azuredeploy.json 3654"
+    }
+  }
+}
